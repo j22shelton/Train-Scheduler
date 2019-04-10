@@ -1,0 +1,11 @@
+body {
+    background: url("https://www.gannett-cdn.com/-mm-/151cbdc67b1b2c1c34abd35c291e3652780661f4/c=22-0-1903-1414/local/-/media/2018/04/11/USATODAY/USATODAY/636590608169898315-GettyImages-908264570.jpg?width=534&height=401&fit=crop");
+    background-repeat: no-repeat;
+    background-size: cover;
+
+}
+
+.container {
+    opacity: .70;
+}
+
