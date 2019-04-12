@@ -99,6 +99,15 @@ $(document).ready(function(){
 
         $("#schedule").prepend("<tr><td>" + trainName + "</td><td>" + destination + "</td><td>" + frequency + "</td><td>" + nextTrainArr + "</td><td>" + nextTrainMin + "</td></tr>");
 
+
+
+        database.ref().orderByChild("dateAdded").limitToLast(1).on("child_added", function(snapshot) {
+        // update text
+        $("#trainName").html(snapshot.val().name);
+        $("#destination").html(snapshot.val().destination);
+        $("#frequency").html(snapshot.val().frequency);
+        $("#time").html(snapshot.val().time);
+    });
     //report error//
     }, function(err) {
         console.log(err);
