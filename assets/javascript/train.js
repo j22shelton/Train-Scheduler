@@ -1,5 +1,7 @@
 $(document).ready(function(){
 
+ //initialize firebase
+
     var config = {
         apiKey: "AIzaSyCk-q3qWnAwXeF5AxHv-B2TGvgOC6MTuKg",
         authDomain: "train-67c09.firebaseapp.com",
@@ -8,40 +10,99 @@ $(document).ready(function(){
         storageBucket: "train-67c09.appspot.com",
         messagingSenderId: "365073443011"
       };
-
+      
       firebase.initializeApp(config);
 
-      var database = firebase.database();
+      //variable to reference database//
 
-      $("#add-train-btn").on("click", function(event) {
+    var dataRef = firebase.database();
+
+    //activate submit button//
+
+    $("#submit-btn").on("click", function(event) {
+        
+        //prevents refresh//
+
         event.preventDefault();
 
-        var trainName = $("#name-input").val().trim();
-        var trainDestination = $("#destination-input").val().trim();
-        var timeFirstTrain = $("#firstTrain-input").val().trim();
-        var trainFrequency = $("#frequency-input").val().trim();
-      
-        var newTrain = {
-            name: trainName,
-            destintion: trainDestination,
-            firstTrain: timeFirstTrain,
-            frequency: trainFrequency,
-          };
+        //stores information//
 
-          database.ref().push(newTrain);
+        var trainName = $("#trainName").val().trim();
+        var destination = $("#destination").val().trim();
+        var firstTrain = $("#firstTrain").val().trim();
+        var frequency = $("#frequency").val().trim();
 
-          $("#name-input").val("");
-          $("#destination-input").val("");
-          $("#firstTrain-input").val("");
-          $("#frequency-input").val("");
+        //clear items//
+
+        $("#trainName").val("");
+        $("#destination").val("");
+        $("#firstTrain").val("");
+        $("#frequency").val("");
+
+        //uploads data//
+
+        dataRef.ref().push({
+            trainName: trainName,
+            destination: destination,
+            time: firstTrain,
+            frequency: frequency
         });
-            
-        database.ref().on("child_added", function(childSnapshot) {
-            console.log(childSnapshot.val());
+    });
 
-            var trainName = childSnapshot.val().name;
-            var trainDestination = childSnapshot.val().destination;
-            var timeFirstTrain = childSnapshot.val().firstTrain;
-            var trainFrequency = childSnapshot.val().frequency;
-      });
-}
+    //connects with firebase//
+
+    dataRef.ref().on("child_added", function(childSnapshot) {
+        console.log(childSnapshot.val());
+
+        //new variables of info from firebase//
+
+        var trainName = childSnapshot.val().trainName;
+        var destination = childSnapshot.val().destination;
+        var frequency = childSnapshot.val().frequency;
+        var time = childSnapshot.val().time;
+        var key = childSnapshot.key;
+
+        //time calculations//
+
+        var firstConverted = moment(time, "hh:mm").subtract(1, "years");
+        console.log(firstConverted);
+
+        //compare time to current time//
+
+        var currentTime = moment();
+        console.log("Current Time: " + moment(currentTime).format("hh:mm"));
+
+
+        $("#currentTime").html("Current Time: " + moment(currentTime).format("hh:mm"));
+
+        //take difference from train start time to current time//
+
+        var timeDiff = moment().diff(moment(firstConverted), "minutes");
+        console.log("Difference In Time: " + timeDiff);
+
+        //divided by train frequency, then converted to whole number//
+
+        var timeRem = timeDiff % frequency;
+        console.log(timeRem);
+
+        //caluculate minutes to next train//
+
+        var nextTrainMin = frequency - timeRem;
+        console.log("Minutes Till Train: " + nextTrainMin);
+
+
+        var nextTrainAdd = moment().add(nextTrainMin, "minutes");
+        var nextTrainArr = moment(nextTrainAdd).format("hh:mm");
+        console.log("Arrival Time: " + nextTrainArr);
+
+        //add info submitted by user//
+
+        $("#schedule").prepend("<tr><td>" + trainName + "</td><td>" + destination + "</td><td>" + frequency + "</td><td>" + nextTrainArr + "</td><td>" + nextTrainMin + "</td></tr>");
+
+    //report error//
+    }, function(err) {
+        console.log(err);
+    });
+ 
+
+});
