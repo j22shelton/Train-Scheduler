@@ -9,4 +9,7 @@
  -First Train Time (in military time)
  -Train Frequency (in minues)
 
+Sole contributer: Jocelyn Shelton
+
+https://j22shelton.github.io/Train-Scheduler/
 
