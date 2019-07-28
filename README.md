@@ -4,19 +4,11 @@
 
  Administrators can add trains with the following details:
  
- -Train Name
- -Train Destination
- -First Train Time (in military time)
- -Train Frequency (in minues)
+ Train Name, Train Destination, First Train Time (in military time), Train Frequency (in minues)
 
 ## Technology
 
-Javascript
-jQuery
-HTML5
-CSS3
-Firebase
-Moment.js
+Javascript, jQuery, HTML5, CSS3, Firebase, Moment.js
 
 https://j22shelton.github.io/Train-Scheduler/
 
