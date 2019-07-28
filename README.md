@@ -9,7 +9,14 @@
  -First Train Time (in military time)
  -Train Frequency (in minues)
 
-Sole contributer: Jocelyn Shelton
+## Technology
+
+Javascript
+jQuery
+HTML5
+CSS3
+Firebase
+Moment.js
 
 https://j22shelton.github.io/Train-Scheduler/
 
